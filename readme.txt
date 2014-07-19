@@ -10,7 +10,7 @@ License URI: http://www.gnu.org/licenses/gpl-2.0.html
 Automatically posts new articles/posts/pages/custom post types to Facebook. 
 
 == Description ==
-You may use this plugin if you want your articles products pages or any other post type to be published to Facebook every time you add a new post. 
+You may use this plugin if you want your articles, products, pages, or any other post type to be published to Facebook every time you add a new post. 
 
 * Option to customize the message to be posted on Facebook when a new post is added.
 * Automatically detects image from post thumbnail and post. 
