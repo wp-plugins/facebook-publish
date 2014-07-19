@@ -21,7 +21,7 @@ You may use this plugin if you want your articles products pages or any other po
 == Installation ==
 1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
 1. Activate the plugin through the 'Plugins' menu in WordPress
-1. Generate Facebook App Id and Secret key - (http://wordpress.org/ "Tutorial")
+1. Generate Facebook App Id and Secret key - [Tutorial](http://codeholic.in/how-to-generate-a-facebook-app-id-and-secret-key/ "Tutorial")
 1. Go to Dashboard>Facebook Publish and save the App Id and Secret key.
 1. Authorize Your facebook account by clicking on **Authorize** button. 
 1. Congrats! You're good to go :)
