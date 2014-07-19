@@ -32,7 +32,7 @@ You may use this plugin if you want your articles, products, pages, or any other
 == Screenshots ==
 1. Settings page 1. Here you to insert and save the facebook API and secret key. 
 2. General settings page. You can control auto publishing for different posts type, categories and other settings
-
+3. Result
 == Changelog ==
 - Initial release
 
