@@ -16,7 +16,10 @@ You may use this plugin if you want your articles products pages or any other po
 * Automatically detects image from post thumbnail and post. 
 * Option to disable thumbnail posting.
 * Option to enable posting only for a particular category
-* Option to enable posting only for a particular post type
+* Schedule posts
+* Post to facebook pages
+* Global setting
+* Change settings for a particular post
 
 == Installation ==
 1. Upload `plugin-name.php` to the `/wp-content/plugins/` directory
@@ -34,7 +37,17 @@ You may use this plugin if you want your articles products pages or any other po
 2. General settings page. You can control auto publishing for different posts type, categories and other settings
 
 == Changelog ==
-- Initial release
+
+**0.9.8**
+
+* Post to Facebook Pages
+* Schedule Your posts
+* Global and Post particular settings
+* Fixed issues
+
+**Initial release**
+
+
 
 == Upgrade Notice ==
 -
