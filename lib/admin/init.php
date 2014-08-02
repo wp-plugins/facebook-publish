@@ -1,7 +1,21 @@
 <?php 
 
-require_once "settings_page.php";
-require_once "add_settings_page_link.php";
+
+
+
+require_once "api-screen.php";
+
+require_once "general-screen.php"; 
+
+require_once "page-handler.php";
+
+require_once "add-settings-page-link.php";
+
+require_once "meta-box.php";
+
+
+
+
 
 
 

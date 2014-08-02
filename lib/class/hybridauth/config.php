@@ -39,7 +39,7 @@ return
 				"enabled" => true,
 				"keys"    => array ( "id"		=> isset($fp_settings["ptf_app_id"])?$fp_settings["ptf_app_id"]:"",
 									 "secret" 	=> isset($fp_settings["ptf_api_key"])?$fp_settings["ptf_api_key"]:"" ),
-				"scope" => "email, user_about_me, publish_stream"  
+				"scope" => "email, user_about_me, publish_stream, manage_pages"  
 			),
 
 			"Twitter" => array ( 

@@ -16,17 +16,39 @@ function fp_handle_facebook() {
 
 		try {
 
-			$fp_hybridauth 	= new Hybrid_Auth( $hybrid_config );
+			//$fp_hybridauth = new Hybrid_Auth( $hybrid_config );
+			
+			$fp_facebook = $fp_hybridauth->authenticate( "facebook" );
 
-			$fp_hybridauth->authenticate( "facebook" );
+			$fp_settings['session_data'] = $fp_hybridauth->getSessionData();
+			
+			$response 	= $fp_facebook->api()->api("/me/accounts");
+			
+			$pages 		= $response["data"];
 
-			update_option( "session_data", $fp_hybridauth->getSessionData() );
+			if(count($pages) > 0){
+
+				$fp_settings['pages'] = array( "own"=> array("id" => "own" , "name" => "Own Timeline")  );
+				$fp_settings["global_pages"] = array("own");
+				foreach($pages as $page) {
+
+					$fp_settings['pages'][$page['id']] = $page;
+					$fp_settings["global_pages"][] = $page['id']; 	
+				}
+			
+			}
+
+
+
+			update_option("fp_settings" , $fp_settings);
 
 			wp_redirect( site_url("/wp-admin/admin.php?page=facebook-publish&tab=api&fbauth=success") );
 		
 		}
 		catch(Exception $e) {
-		
+			
+			cdlc_show_notification("Please enter  <b>Application ID</b> and <b>Secret Key</b>" , "error");
+			wp_redirect( site_url("/wp-admin/admin.php?page=facebook-publish&tab=api") );
 			//echo $e->getMessage();
 
 		} 
@@ -38,6 +60,10 @@ function fp_handle_facebook() {
 		$facebook_adapter = $fp_hybridauth->getAdapter("facebook");
 
 		$facebook_adapter->logout();
+		
+		$fp_settings['session_data'] = $fp_hybridauth->getSessionData();
+
+		update_option("fp_settings" , $fp_settings);
 
 		wp_redirect( site_url("/wp-admin/admin.php?page=facebook-publish&tab=api&fbauth=loggedout") );
 	
