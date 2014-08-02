@@ -17,7 +17,7 @@
 							'ptf_api_key' 			=> "",
 							'fp_post_types' 		=> array("post" , "page"),
 							'fp_post_cat' 			=> array("Uncategorized"),
-							'fp_all_posts' 			=> "1",
+							'fp_all_posts' 			=> "0",
 							'show_auth_btn' 		=> true,
 							'msg_body'				=> "My new Post on ".get_bloginfo("name"), 
 							'post_featured_image'	=> "yes", 
