@@ -34,8 +34,10 @@ You may use this plugin if you want your articles products pages or any other po
 
 == Screenshots ==
 1. Settings page 1. Here you to insert and save the facebook API and secret key. 
-2. General settings page. You can control auto publishing for different posts type, categories and other settings
-3. The result
+2. General settings page. You can control auto publishing for different posts type,change message to be posted, facebook pages and other settings
+3. The post particular settings.
+4. Schedule option
+5. The result
 
 == Changelog ==
 
