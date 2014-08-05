@@ -26,7 +26,7 @@ function fp_publish_post($post) {
 	}
 	else {
 
-		cdlc_show_notification("Post couldn't be published on Facebook. " , "error"); //bug
+		cdlc_show_notification("Post couldn't be published on Facebook. " , "error"); 
 	}
 
 }
@@ -116,7 +116,16 @@ function fp_post_to_fb(  $post_settings ) {
 
 	if(in_array(  "own" , $post_settings['pages'])){
 
-		$facebook_adapter->setUserStatus( $config );
+		try{
+
+			$facebook_adapter->setUserStatus( $config );
+		}
+		catch(Exception $e) {
+			//pre($facebook_adapter);	
+			cdlc_show_notification("Post couldn't be published on Facebook. ".$e->getMessage() , "error"); 
+			return;
+		}
+
 
 	}
 
@@ -271,7 +280,14 @@ function fp_post_to_fb_page($page_id, $post_settings ) {
 	}
 
 	//pre($params);
+	try{
 
-	$facebook_adapter->api()->api( "/" . $page_id . "/feed", 'POST', $params );
+		$facebook_adapter->api()->api( "/" . $page_id . "/feed", 'POST', $params );
+	}
+	catch(Exception $e) {
+
+		cdlc_show_notification("Post couldn't be published on Facebook. ".$e->getMessage() , "error"); 
+		return;
+	}
 }
 ?>
