@@ -12,14 +12,14 @@
 		}
 
 		$defaults = array(
-							'version' 				=> '0.9.8',
+							'version' 				=> $fp_version,
 							'ptf_app_id' 			=> "",
 							'ptf_api_key' 			=> "",
 							'fp_post_types' 		=> array("post" , "page"),
 							'fp_post_cat' 			=> array("Uncategorized"),
-							'fp_all_posts' 			=> "1",
+							'fp_all_posts' 			=> "0",
 							'show_auth_btn' 		=> true,
-							'msg_body'				=> "My new Post on ".get_bloginfo("name"), 
+							'msg_body'				=> "My new post on {SITE_NAME}", 
 							'post_featured_image'	=> "yes", 
 							'post_schedule' 		=> "no",
 							'queue' 				=> array(),

@@ -9,9 +9,6 @@ function fp_add_meta_box() {
 
     if(!isset($post))
         return;
-
-    if($post->post_status === 'publish')
-    	return;
     
 	$screens = array();
 	
@@ -109,11 +106,20 @@ function fp_meta_box_callback() {
 				</div>
 				
 				<div class="fp_feature_img_container">
-					<span  class="fp_label">Post featured images to Facebook?</span><br>
+					<span  class="fp_label">Post images to Facebook?</span><br>
 					<input <?php checked("yes" , $fp_settings['post_featured_image'] ); ?> type="radio" id="fp_featured_img_yes" value="yes" name="fp_featured_img" /> <label for="fp_featured_img_yes">Yes</label><br>
 					<input <?php checked("no" , $fp_settings['post_featured_image'] ); ?> type="radio" id="fp_featured_img_no"  value="no"  name="fp_featured_img" /> <label for="fp_featured_img_no">No</label>
 				</div>				
-
+				
+				<div class="fp_featured_img_options">
+					<span  class="fp_label">Use image:</span><br>
+					<input <?php checked("featured" , $fp_settings['use_image'] ); ?> type="radio" id="fp_use_featured_image" value="featured" name="use_image" /> <label for="fp_use_featured_image">Featured Image</label><br>
+					<input <?php checked("custom" , $fp_settings['use_image'] ); ?> type="radio" id="fp_use_custom_image"  value="custom"  name="use_image" /> <label for="fp_use_custom_image">Custom Image</label>					
+				</div>
+				<!-- <div class="fp_child fp_custom_img">
+					<img id="fp_img_img"></img>
+					<button id="fp_img_btn" class=""></button>
+				</div> -->
 				<div class="fp_fb_pages">
 					<span class="fp_label">Facebook Pages:</span><br>
 					<?php fp_print_fb_pages(); ?>
@@ -209,6 +215,24 @@ function fp_meta_box_callback() {
 
 			}
 
+			function fp_scheduling_validation() {
+				jQuery("form#post").submit( function() {
+  
+				  if(jQuery("#fp_schedule_this_yes").is(":checked") && jQuery("#fp_publish_this").is(":checked")) {
+				    
+				    if(jQuery(".fp_datetime").val() == "") {
+				        
+				      alert("Please enter date and time for post scheduling. ");
+				      jQuery(".fp_datetime").focus();
+				      return false;
+				      
+				    }
+				    
+				  }
+				  
+				});
+			}
+
 			jQuery(document).ready(
 			function(){
 
@@ -231,12 +255,40 @@ function fp_meta_box_callback() {
 				
 				fp_add_timzone_value();
 
+				fp_scheduling_validation();
 			});
 
 
+			jQuery(document).ready(function($){
+			  var _custom_media = true,
+			      _orig_send_attachment = wp.media.editor.send.attachment;
+
+			  $('#fp_custom_imge').click(function(e) {
+			    var send_attachment_bkp = wp.media.editor.send.attachment;
+			    var button = $(this);
+			    var id = button.attr('id').replace('_button', '');
+			    _custom_media = true;
+			    wp.media.editor.send.attachment = function(props, attachment){
+			      if ( _custom_media ) {
+			        $("#"+id).val(attachment.url);
+
+			      } else {
+			        return _orig_send_attachment.apply( this, [props, attachment] );
+			      };
+			    }
+
+			    wp.media.editor.open(button);
+			    return false;
+			  });
+
+			  $('.add_media').on('click', function(){
+			    _custom_media = false;
+			  });
+			});
 
 		</script>
 	<?php
 
 //fp_meta_box_callback
 }
+

@@ -3,7 +3,7 @@
 Plugin Name: Facebook Publish
 Plugin URI: http://codeholic.in/
 Description: Automatically posts new articles to Facebook. Simple one click Integration. 
-Version: 0.9.8
+Version: 1.0
 Author: Pramod Jodhani
 Author URI: http://codeholic.in/
 */
@@ -11,6 +11,8 @@ Author URI: http://codeholic.in/
 define('FP_SETTINGS_SLUG' , "facebook-publish");
 
 define('FP_PLUGIN_NAME' , "Facebook Publish");
+
+require_once("fp-constants.php");
 
 $fp_settings = get_option("fp_settings");
 
@@ -36,7 +38,6 @@ if($fp_session_data) {
 	}
 
 }
-
 
 
 

@@ -3,6 +3,7 @@
 /*------------------------ General Settings Tab --------------------------*/
 function fp_general_settings() {
 	global $fp_settings;
+	global $fp_magic_quotes;
 	?>
 	<h3>General Settings</h3>
 	
@@ -55,7 +56,29 @@ function fp_general_settings() {
 			<th scope="row">Message Body:</th>
 			<td>
 				
-				<textarea id="msg_body" class="msg_body" name="msg_body" ><?php echo $fp_settings["msg_body"]; ?></textarea>
+				<div id="fp_msg_body_wrap">
+					
+					<textarea id="msg_body" class="msg_body pull-left" name="msg_body" ><?php echo $fp_settings["msg_body"]; ?></textarea>
+					
+					<div id="fp_magic_wrap" class="pull-left">
+						
+						<div class="clear" id="magic_quote_heading"> <b>Magic Quotes</b> </div>
+
+						<select name="fp_magic_quote_select" id="fp_magic_quote_select" class="pull-left">
+							<?php
+								foreach($fp_magic_quotes as $fmc) {
+									echo "<option value='$fmc'>".$fmc."</option>"; 
+								}
+							?>
+						</select>
+						
+						&nbsp;
+						
+						<button id="fp_insert_magic_quote"  class="pull-left">Insert &raquo;</button>
+					
+					</div>
+
+				</div>
 			</td>
 		</tr>
 		
@@ -120,6 +143,21 @@ function fp_general_settings() {
 		 	}
 		);
 		
+		jQuery(document).ready(function() {
+
+			jQuery("#fp_insert_magic_quote").click(
+			  function(e) {
+			    e.preventDefault();
+			    quote = jQuery("#fp_magic_quote_select").val()
+			    quote = "{" + quote + "}"; 
+			    msg_bdy = jQuery("#msg_body").val(); 
+			    msg_bdy += quote; 
+			    jQuery("#msg_body").val(msg_bdy);
+			  }
+			);
+
+		});
+
 	</script>
 	<?php
 }

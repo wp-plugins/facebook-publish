@@ -1,19 +1,21 @@
 <?php
 
-add_action('new_to_publish', 'fp_publish_post');
+/*add_action('new_to_publish', 'fp_publish_post');
 add_action('draft_to_publish', 'fp_publish_post');
 add_action('pending_to_publish', 'fp_publish_post');
-add_action('auto-draft_to_publish', 'fp_publish_post');
+add_action('auto-draft_to_publish', 'fp_publish_post');*/
 //add_action('publish_to_draft', 'fp_publish_post');  //delete this
 
+add_action( 'save_post', 'fp_publish_post' );
 
-function fp_publish_post($post) {
+
+function fp_publish_post($post_id) {
 
 	global $fp_hybridauth;
 
 	global $fp_settings;
 	
-	$post_id = $post->ID;
+//	$post_id = $post->ID;
 
 	if($fp_hybridauth->isConnectedWith("facebook")) {
 
@@ -85,9 +87,9 @@ function fp_post_to_fb(  $post_settings ) {
 
 	$msg_body 			= $post_settings['msg_body'];
 
-	$message 			= $msg_body;
-
 	$post_id 			= $post_settings["post_id"];
+
+	$message 			= render_magic_quote($post_id , $msg_body);
 
 	$url 				= get_permalink( $post_settings["post_id"] );
 
@@ -121,7 +123,7 @@ function fp_post_to_fb(  $post_settings ) {
 			$facebook_adapter->setUserStatus( $config );
 		}
 		catch(Exception $e) {
-			//pre($facebook_adapter);	
+
 			cdlc_show_notification("Post couldn't be published on Facebook. ".$e->getMessage() , "error"); 
 			return;
 		}
@@ -219,8 +221,6 @@ function fp_cron_function() {
 
 				fp_post_to_fb( $post_settings );	 		
 
-				wp_mail("mrpramodjodhani@gmail.com" , "Facebook Publish: It ran" , "Post ID: $post_id");	
-
 				//remove current post id from queue 
 				foreach($fp_settings["queue"] as $key => $id) {
 					
@@ -290,4 +290,53 @@ function fp_post_to_fb_page($page_id, $post_settings ) {
 		return;
 	}
 }
+
+
+function render_magic_quote($post_id , $msg) {
+
+	$post = get_post($post_id); 
+	
+
+	$POST_TITLE = '{POST_TITLE}';
+	if(strpos($msg, $POST_TITLE) !== false) {
+		$title = $post->post_title;
+		$msg = str_replace($POST_TITLE , $title, $msg);
+	}
+
+	$POST_URL = '{POST_URL}';
+	if(strpos($msg, $POST_URL) !== false) {
+		$url =  get_permalink( $post_id );
+		$msg = str_replace($POST_URL , $url, $msg);
+	}
+
+	$SITE_URL = '{SITE_URL}';
+	if(strpos($msg, $SITE_URL) !== false) {
+		$url = get_site_url();
+		$msg = str_replace($SITE_URL , $url, $msg);
+	}
+	
+	$POST_ID = '{POST_ID}';
+	if(strpos($msg, $POST_ID) !== false) {
+		$msg = str_replace($POST_ID , $post_id, $msg);
+	}
+	
+	$POST_EXCERPT = '{POST_EXCERPT}';
+	if(strpos($msg, $POST_EXCERPT) !== false) {
+		$excerpt = get_the_excerpt();
+		$msg = str_replace($POST_EXCERPT , $excerpt , $msg);
+	}	
+	
+	//TODO author is incomplete 
+	$POST_AUTHOR = '{POST_AUTHOR}';
+	if(strpos($msg, $POST_AUTHOR) !== false) {
+		$author_id 	= $post->post_author;
+		$author 	= get_userdata($author_id);
+		$author 	= $author->user_nicename;
+		$author 	= ucwords($author);	
+		$msg 		= str_replace($POST_AUTHOR , $author , $msg);
+	}
+
+	return $msg;
+}
+
 ?>

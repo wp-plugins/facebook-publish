@@ -34,3 +34,16 @@ label.css-label {
   margin-right: 5px;
   width: 36px;
 }
+
+.pull-left {
+  float: left;
+}
+
+#fp_magic_wrap {
+  margin-left: 50px;
+  padding: 0 16px 16px;
+}
+
+#magic_quote_heading {
+  margin-left: 3px;
+}
