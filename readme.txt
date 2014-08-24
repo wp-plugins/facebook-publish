@@ -6,9 +6,9 @@ Tags: facebook, facebook auto publish, post, facebook publish
 
 Requires at least: 3.2
 
-Tested up to: 3.9.1
+Tested up to: 3.9.2
 
-Stable tag: 0.9.8
+Stable tag: 1.0
 
 License: GPLv2
 
