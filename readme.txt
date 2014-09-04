@@ -3,7 +3,7 @@ Contributors: promz
 Tags: facebook, facebook auto publish, post, facebook publish
 Requires at least: 3.2
 Tested up to: 3.9.2
-Stable tag: 1.0.1
+Stable tag: 1.0.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -42,6 +42,11 @@ You may use this plugin if you want your articles products pages or any other po
 5. The result
 
 == Changelog ==
+= 1.0.2 =
+* Fixed exerpt issue
+* Fixed revision issue
+* Fixed HTML tags isuse
+
 = 1.0 =
 * Fixed issues
 * Magic Quotes 

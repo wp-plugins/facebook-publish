@@ -9,6 +9,9 @@ add_action( 'save_post', 'fp_publish_post' );
 function fp_publish_post($post_id) {
 	global $fp_hybridauth;
 	global $fp_settings;
+	if ( wp_is_post_revision( $post_id ) ) {
+		return;
+	}
 	if($fp_hybridauth->isConnectedWith("facebook")) {
 		if(isset($_POST['fp_publish_this'])) {
 			fp_post_handler($post_id);
@@ -217,8 +220,10 @@ function render_magic_quote($post_id , $msg) {
 	
 	$POST_EXCERPT = '{POST_EXCERPT}';
 	if(strpos($msg, $POST_EXCERPT) !== false) {
-		$excerpt = get_the_excerpt();
-		$msg = str_replace($POST_EXCERPT , $excerpt , $msg);
+		$excerpt = $post->post_excerpt;
+		$excerpt = strip_tags($excerpt);
+		$msg 	 = str_replace($POST_EXCERPT , $excerpt , $msg);
+
 	}		
 
 	$SITE_NAME = '{SITE_NAME}';
