@@ -1,5 +1,5 @@
 === Facebook Publish ===
-Contributors: promz
+Contributors: promz, shashanksahu
 Tags: facebook, facebook auto publish, post, facebook publish
 Requires at least: 3.2
 Tested up to: 4.0
