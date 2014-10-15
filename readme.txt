@@ -3,7 +3,7 @@ Contributors: promz, shashanksahu, mukkiee
 Tags: facebook, facebook auto publish, post, facebook publish
 Requires at least: 3.2
 Tested up to: 4.0
-Stable tag: 1.0.2
+Stable tag: 1.1
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -20,6 +20,9 @@ You may use this plugin if you want your articles products pages or any other po
 * Post to facebook pages
 * Global setting
 * Change settings for a particular post
+* Choose custom image
+* Scheduling information
+* Compatible with other auto posting plugins
 
 **Tutorial** - [Setting up Facebook Publish WordPress plugin ](http://codeholic.in/setting-up-facebook-publish-wordpress-plugin/ "Setting up Facebook Publish WordPress plugin ")
 
@@ -42,6 +45,12 @@ You may use this plugin if you want your articles products pages or any other po
 5. The result
 
 == Changelog ==
+
+= 1.1 =
+* Choose custom image.
+* Better scheduling information.
+* Compatible with other auto posting plugins. 
+
 = 1.0.2 =
 * Fixed exerpt issue
 * Fixed revision issue
@@ -50,6 +59,7 @@ You may use this plugin if you want your articles products pages or any other po
 = 1.0 =
 * Fixed issues
 * Magic Quotes 
+
 = 0.9.8 =
 
 * Post to Facebook Pages
