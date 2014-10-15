@@ -86,20 +86,19 @@ function fp_meta_box_callback() {
 				</div>
 				
 				<div class="fp_feature_img_container">
-					<span  class="fp_label">Post images to Facebook?</span><br>
-					<input <?php checked("yes" , $fp_settings['post_featured_image'] ); ?> type="radio" id="fp_featured_img_yes" value="yes" name="fp_featured_img" /> <label for="fp_featured_img_yes">Yes</label><br>
-					<input <?php checked("no" , $fp_settings['post_featured_image'] ); ?> type="radio" id="fp_featured_img_no"  value="no"  name="fp_featured_img" /> <label for="fp_featured_img_no">No</label>
+					<span  class="fp_label">Publish Image:</span><br>
+					<input checked="checked" type="radio" id="fp_featured_img_featured" value="featured" name="fp_featured_img" /> <label for="fp_featured_img_featured">Use Featured Image</label><br>
+					<input type="radio" id="fp_featured_img_none"  value="none"  name="fp_featured_img" /> <label for="fp_featured_img_none">None</label><br>
+					<input type="radio" id="fp_featured_img_choose"  value="choose"  name="fp_featured_img" /> <label for="fp_featured_img_choose">Choose Image</label>
+					<div class="fp_custom_img hidden">
+						<div class="uploader">
+							<input id="fp_post_img_text" name="fp_post_img_text" type="text" />
+							<input id="fp_post_img_btn" class="fp_post_img_btn button" name="fp_post_img_btn" type="button" value="Upload" />
+						</div>
+					</div>
 				</div>				
 				
-				<!--<div class="fp_featured_img_options">
-					<span  class="fp_label">Use image:</span><br>
-					<input <?php// checked("featured" , $fp_settings['use_image'] ); ?> type="radio" id="fp_use_featured_image" value="featured" name="use_image" /> <label for="fp_use_featured_image">Featured Image</label><br>
-					<input <?php //checked("custom" , $fp_settings['use_image'] ); ?> type="radio" id="fp_use_custom_image"  value="custom"  name="use_image" /> <label for="fp_use_custom_image">Custom Image</label>					
-				</div>
-				 <div class="fp_child fp_custom_img">
-					<img id="fp_img_img"></img>
-					<button id="fp_img_btn" class=""></button>
-				</div> -->
+
 				<div class="fp_fb_pages">
 					<span class="fp_label">Facebook Pages:</span><br>
 					<?php fp_print_fb_pages(); ?>
@@ -130,6 +129,12 @@ function fp_meta_box_callback() {
 			.fp_label {
 				font-weight: bold;
 			}
+			#fp_post_img_text {
+			  width: 124px;
+			}
+			/* #fp_post_img_btn {
+			  width: 59px;
+			} */
 		</style>
 		<script type="text/javascript">
 			function fg_toggle_publish() {
@@ -192,6 +197,19 @@ function fp_meta_box_callback() {
 				  
 				});
 			}
+
+			
+
+			function handle_featured_img() {
+
+				if( jQuery("#fp_featured_img_choose").is(":checked") ) {
+			      jQuery(".fp_custom_img").fadeIn();
+			    }
+			    else {
+			      jQuery(".fp_custom_img").fadeOut();    
+			    }
+			    
+			} 
 			jQuery(document).ready(
 			function(){
 				fp_toggle_schedule();
@@ -200,6 +218,10 @@ function fp_meta_box_callback() {
 				function() {
 					fg_toggle_publish();	
 				});
+
+				handle_featured_img();
+				jQuery("input[name='fp_featured_img']").change(handle_featured_img);
+
 				jQuery("input[name=fp_schedule_this]").change(
 				function() {
 					fp_toggle_schedule();	
@@ -212,26 +234,29 @@ function fp_meta_box_callback() {
 			});
 
 			jQuery(document).ready(function($){
-			  var _custom_media = true,
-			      _orig_send_attachment = wp.media.editor.send.attachment;
-			  $('#fp_custom_imge').click(function(e) {
-			    var send_attachment_bkp = wp.media.editor.send.attachment;
-			    var button = $(this);
-			    var id = button.attr('id').replace('_button', '');
-			    _custom_media = true;
-			    wp.media.editor.send.attachment = function(props, attachment){
-			      if ( _custom_media ) {
-			        $("#"+id).val(attachment.url);
-			      } else {
-			        return _orig_send_attachment.apply( this, [props, attachment] );
-			      };
-			    }
-			    wp.media.editor.open(button);
-			    return false;
-			  });
-			  $('.add_media').on('click', function(){
-			    _custom_media = false;
-			  });
+				var _custom_media = true,
+				_orig_send_attachment = wp.media.editor.send.attachment;
+				 
+				$('.fp_post_img_btn').click(function(e) {
+				var send_attachment_bkp = wp.media.editor.send.attachment;
+				var button = $(this);
+				var id = button.attr('id').replace('_button', '');
+				_custom_media = true;
+				wp.media.editor.send.attachment = function(props, attachment){
+				if ( _custom_media ) {
+				$("#fp_post_img_text").val(attachment.url);
+				} else {
+				return _orig_send_attachment.apply( this, [props, attachment] );
+				};
+				}
+				 
+				wp.media.editor.open(button);
+				return false;
+				});
+				 
+				$('.add_media').on('click', function(){
+				_custom_media = false;
+				});
 			});
 		</script>
 	<?php

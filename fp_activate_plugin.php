@@ -1,7 +1,8 @@
 <?php
 		
 	global $fp_settings;
-
+	global $fp_version;
+	
 	if(!$fp_settings) {
 
 		$fp_settings = get_option("fp_settings");
@@ -20,12 +21,13 @@
 							'fp_all_posts' 			=> "0",
 							'show_auth_btn' 		=> true,
 							'msg_body'				=> "My new post on {SITE_NAME}", 
-							'post_featured_image'	=> "yes", 
+							'post_featured_image'	=> "featured", 
 							'post_schedule' 		=> "no",
 							'queue' 				=> array(),
 							'session_data' 			=> "",
 							'pages' 				=> array(), 
 							'global_pages' 			=> array( "own"=> array("id" => "own" , "name" => "Own Timeline")  ), 
+							'automatic_posts' 		=> "no",
 						);
 
 		$fp_settings = wp_parse_args( $fp_settings, $defaults );
@@ -36,4 +38,3 @@
 
 	//exit;
 
-?>

@@ -1,21 +1,33 @@
 <?php
-/*add_action('new_to_publish', 'fp_publish_post');
+/*
+add_action('new_to_publish', 'fp_publish_post');
 add_action('draft_to_publish', 'fp_publish_post');
 add_action('pending_to_publish', 'fp_publish_post');
-add_action('auto-draft_to_publish', 'fp_publish_post');*/
-//add_action('publish_to_draft', 'fp_publish_post');  //delete this
+add_action('auto-draft_to_publish', 'fp_publish_post');
+*/
+
 add_action( 'save_post', 'fp_publish_post' );
 
 function fp_publish_post($post_id) {
+
 	global $fp_hybridauth;
 	global $fp_settings;
 	if ( wp_is_post_revision( $post_id ) ) {
 		return;
 	}
+
 	if($fp_hybridauth->isConnectedWith("facebook")) {
+
 		if(isset($_POST['fp_publish_this'])) {
 			fp_post_handler($post_id);
 		}
+		else if($fp_settings["automatic_posts"]=="yes" && ( in_array( get_post_type( $post_id ) , $fp_settings["fp_post_types"] ) || $fp_settings["fp_all_posts"] ) ) {
+			
+			fp_post_handler($post_id);
+
+		}
+		
+	
 	}
 	else {
 		cdlc_show_notification("Post couldn't be published on Facebook. " , "error"); 
@@ -23,14 +35,24 @@ function fp_publish_post($post_id) {
 }
 
 function fp_post_handler($post_id) {
+	global $fp_settings;
+	
 	$config = array();
 	$config['post_id'] 				= $post_id;
-	$config['fp_publish_this'] 		= $_POST['fp_publish_this'];
-	$config['fp_schedule_this'] 	= $_POST['fp_schedule_this'];
-	$config['fp_datetime'] 			= $_POST['fp_datetime'];
-	$config['fp_timezone_offset'] 	= $_POST['fp_timezone_offset'];
-	$config['msg_body'] 			= $_POST['msg_body'];
-	$config['fp_featured_img'] 		= $_POST['fp_featured_img'];
+	
+	$config['fp_publish_this'] 		= isset($_POST['fp_publish_this']) ? $_POST['fp_publish_this'] : "on";
+
+	$config['fp_schedule_this'] 	= isset($_POST['fp_schedule_this']) ? $_POST['fp_schedule_this'] : "no";
+	
+	$config['fp_datetime'] 			= isset($_POST['fp_datetime']) ? $_POST['fp_datetime'] : "";
+	
+	$config['fp_timezone_offset'] 	= isset($_POST['fp_timezone_offset'])? $_POST['fp_timezone_offset'] : "";
+	
+	$config['msg_body'] 			= isset($_POST['msg_body'])? $_POST['msg_body'] : $fp_settings['msg_body'] ;
+	
+	$config['fp_featured_img'] 		= isset($_POST['fp_featured_img']) ? $_POST['fp_featured_img'] : $fp_settings["post_featured_image"];
+	
+	$config['fp_post_img_text'] 	= isset($_POST['fp_post_img_text']) ? $_POST['fp_post_img_text'] : "";
 	
 	if(isset($_POST['global_pages'])) {
 		$config['pages'] 				= $_POST['global_pages'];
@@ -38,7 +60,8 @@ function fp_post_handler($post_id) {
 	else {
 		$config['pages'] 				= array("own");
 	}
-	if($config['fp_publish_this'] == "on") {
+	if($config['fp_publish_this'] == "on" )
+	{
 		if($config['fp_schedule_this'] == "yes") {
 				
 			fp_schedule_this_post($config);
@@ -47,15 +70,18 @@ function fp_post_handler($post_id) {
 			fp_post_to_fb($config);
 		}
 	}
+
 }
 
 function fp_post_to_fb(  $post_settings ) {
 	global $fp_hybridauth;
 	
 	$fp_settings = get_option("fp_settings");
+
 	if( $fp_session_data = $fp_settings['session_data'] ) {
 		$fp_hybridauth->restoreSessionData( $fp_session_data );
 	}
+
 	$facebook_adapter 	= $fp_hybridauth->getAdapter("facebook");
 	$msg_body 			= $post_settings['msg_body'];
 	$post_id 			= $post_settings["post_id"];
@@ -66,16 +92,27 @@ function fp_post_to_fb(  $post_settings ) {
 								"message" => $message, 
 								"link" => $url,  
 								); 
-	if($post_settings['fp_featured_img']=="yes") {
+
+	if($post_settings['fp_featured_img']=="featured") {
 		if(has_post_thumbnail( $post_id )) {
 			$img = wp_get_attachment_image_src( get_post_thumbnail_id($post_id), 'large');
 			$img = $img[0];
 			$picture = array("picture" =>   $img);
-			
 			$config  = array_merge($config , $picture);
 			
 		}
+
 	}
+	else if($post_settings['fp_featured_img']== "choose") {
+		
+		if($post_settings['fp_post_img_text']) {
+
+			$picture = array("picture" =>   $post_settings['fp_post_img_text']);
+			
+			$config  = array_merge($config , $picture);
+		}
+	}
+
 	if(in_array(  "own" , $post_settings['pages'])){
 		try{
 			$facebook_adapter->setUserStatus( $config );
@@ -84,8 +121,8 @@ function fp_post_to_fb(  $post_settings ) {
 			cdlc_show_notification("Post couldn't be published on Facebook. ".$e->getMessage() , "error"); 
 			return;
 		}
-
 	}
+
 	foreach($post_settings['pages'] as $page_id ) {
 		if($page_id != "own") {
 			
@@ -97,6 +134,7 @@ function fp_post_to_fb(  $post_settings ) {
 }
 
 function fp_schedule_this_post($post_settings) {
+
 	global $fp_settings;
 	$post_id 			= $post_settings['post_id'];
 	$fp_datetime 		= $post_settings['fp_datetime'];
@@ -106,15 +144,24 @@ function fp_schedule_this_post($post_settings) {
 	$timestamp 			= $timestamp + ($fp_timezone_offset*60);
 	$queue				= $fp_settings["queue"];	
 	$queue[]			= $post_id;
+
 	update_post_meta($post_id , "fp_timestamp" , $timestamp  );	
 	update_post_meta($post_id , "post_settings" , $post_settings  );			
+	
 	$fp_settings["queue"] =   array_unique($queue);
+	
 	update_option( "fp_settings" , $fp_settings);
+
+	cdlc_show_notification("Post scheduled for date: ".$fp_datetime );
+
 }
+
 if ( ! wp_next_scheduled( 'fp_cron_hook' ) ) {
   wp_schedule_event( time(), 'hourly', 'fp_cron_hook' );
 }
+
 add_action( 'fp_cron_hook', 'fp_cron_function' );
+
 function fp_cron_function() {
 	$fp_settings = get_option("fp_settings");
 	//pre($fp_settings["queue"]);
@@ -159,7 +206,9 @@ function fp_cron_function() {
 }
 
 function fp_post_to_fb_page($page_id, $post_settings ) {
+
 	global $fp_settings, $fp_hybridauth;
+
 	$facebook_adapter 	= $fp_hybridauth->getAdapter("facebook");
 	$message 			= $post_settings['msg_body'];
 	$post_id 			= $post_settings["post_id"];
@@ -174,8 +223,11 @@ function fp_post_to_fb_page($page_id, $post_settings ) {
 								'message' => $message,
 								"link" => $url, 
 								);
-	if($post_settings['fp_featured_img']=="yes") {
+
+	if($post_settings['fp_featured_img']=="featured") {
+		
 		if(has_post_thumbnail( $post_id )) {
+			
 			$img = wp_get_attachment_image_src( get_post_thumbnail_id($post_id), 'large');
 			$img = $img[0];
 			$picture = array("picture" =>   $img);
@@ -184,7 +236,17 @@ function fp_post_to_fb_page($page_id, $post_settings ) {
 			
 		}
 	}
-	//pre($params);
+	else if($post_settings['fp_featured_img']== "choose") {
+		
+		if($post_settings['fp_post_img_text']) {
+
+			$picture = array("picture" =>   $post_settings['fp_post_img_text']);
+			
+			$params  = array_merge($params , $picture);
+		}
+	}
+	
+
 	try{
 		$facebook_adapter->api()->api( "/" . $page_id . "/feed", 'POST', $params );
 	}
