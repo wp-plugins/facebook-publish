@@ -12,6 +12,7 @@ function fp_publish_post($post_id) {
 
 	global $fp_hybridauth;
 	global $fp_settings;
+	
 	if ( wp_is_post_revision( $post_id ) ) {
 		return;
 	}
@@ -95,6 +96,7 @@ function fp_post_to_fb(  $post_settings ) {
 
 	if($post_settings['fp_featured_img']=="featured") {
 		if(has_post_thumbnail( $post_id )) {
+			
 			$img = wp_get_attachment_image_src( get_post_thumbnail_id($post_id), 'large');
 			$img = $img[0];
 			$picture = array("picture" =>   $img);
@@ -249,6 +251,7 @@ function fp_post_to_fb_page($page_id, $post_settings ) {
 
 	try{
 		$facebook_adapter->api()->api( "/" . $page_id . "/feed", 'POST', $params );
+		fp_increment_post_count();
 	}
 	catch(Exception $e) {
 		cdlc_show_notification("Post couldn't be published on Facebook. ".$e->getMessage() , "error"); 

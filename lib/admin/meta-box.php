@@ -107,7 +107,21 @@ function fp_meta_box_callback() {
 				<input type="hidden" value="" name="fp_timezone_offset" id="fp_timezone_offset"/>
 			</div>			
 		</div>
-		
+		<?php 
+
+		if(isset($_GET['post'])) {
+			$post_id = $_GET['post'];
+			if(fp_post_is_scheduled($post_id)) {
+
+				$post_settings 	= get_post_meta($post_id , "post_settings" , true);
+				$fp_datetime 	= $post_settings["fp_datetime"];
+				echo "<div class='fp_scheduled_post'>Scheduled: $fp_datetime</div>";
+			
+			}
+
+		}
+
+		?>		
 		<style type="text/css">
 			.fp_child {
 				width: 100%;
@@ -135,6 +149,14 @@ function fp_meta_box_callback() {
 			/* #fp_post_img_btn {
 			  width: 59px;
 			} */
+			.fp_scheduled_post {
+			  background: none repeat scroll 0 0 black;
+			  color: #81b5fc;
+			  font-size: 12px;
+			  padding: 2px 5px;
+			  margin-top: 10px;
+
+			}
 		</style>
 		<script type="text/javascript">
 			function fg_toggle_publish() {

@@ -111,6 +111,17 @@ function fp_general_settings() {
 		</tr>
 	<?php endif; ?>
 		<tr>
+			<th scope="row">Reset all settings:</th>
+			<td>
+				
+				<?php 
+					$reset_url = site_url("/?fp_reset_plugin_data=1");
+				?>
+				<a data-url="<?php echo $reset_url; ?>" href="javascript:void(0)" id="fp_reset_button" class="button">Reset Now</a>
+				
+			</td>
+		</tr>
+		<tr>
 			
 			<td>
 				
@@ -151,6 +162,17 @@ function fp_general_settings() {
 			    jQuery("#msg_body").val(msg_bdy);
 			  }
 			);
+
+			jQuery(document).on("click", "#fp_reset_button", 
+				function(){
+					if(confirm("Are you sure?")) {
+						if(confirm("Are you double sure? This step is irreversible. ")) {
+							window.location = jQuery("#fp_reset_button").attr("data-url");
+						}
+					}
+					return false;
+				} );
+
 		});
 	</script>
 	<?php

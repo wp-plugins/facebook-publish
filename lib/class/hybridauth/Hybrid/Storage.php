@@ -106,11 +106,17 @@ class Hybrid_Storage implements Hybrid_Storage_Interface
 
 		if( isset( $_SESSION["HA::STORE"] ) && count( $_SESSION["HA::STORE"] ) ) {
 		    $f = $_SESSION['HA::STORE'];
-		    foreach( $f as $k => $v ){ 
-				if( strstr( $k, $key ) ){
-					unset( $f[ $k ] ); 
-				}
-			}
+		    if(count($f)) {
+		    	if(count($f)) {
+
+				    foreach( $f as $k => $v ){ 
+						if( strstr( $k, $key ) ){
+							unset( $f[ $k ] ); 
+						}
+			    	}
+
+		    	}
+		    }
 			$_SESSION["HA::STORE"] = $f;
 			
 		}

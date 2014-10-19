@@ -3,7 +3,7 @@ Contributors: promz, shashanksahu, mukkiee
 Tags: facebook, facebook auto publish, post, facebook publish
 Requires at least: 3.2
 Tested up to: 4.0
-Stable tag: 1.1
+Stable tag: 1.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -45,6 +45,10 @@ You may use this plugin if you want your articles products pages or any other po
 5. The result
 
 == Changelog ==
+
+= 1.2 =
+* Fixed authentication and fatal errors
+* Improved UX 
 
 = 1.1 =
 * Choose custom image.
