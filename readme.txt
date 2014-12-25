@@ -35,7 +35,8 @@ You may use this plugin if you want your articles products pages or any other po
 1. Congrats! You're good to go :)
 
 == Frequently Asked Questions ==
-Q. **Post published on Facebook is visible to the page moderates/owners only, no other member can see the post, what is wrong? **
+**Post published on Facebook is visible to the page moderates/owners only, no other member can see the post, what is wrong?**
+
 Ans: http://codeholic.in/facebook-publish-post-to-page-issue-resolved/
 
 == Screenshots ==
