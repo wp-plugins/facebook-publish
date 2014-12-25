@@ -35,9 +35,9 @@ You may use this plugin if you want your articles products pages or any other po
 1. Congrats! You're good to go :)
 
 == Frequently Asked Questions ==
-**Post published on Facebook is visible to the page moderates/owners only, no other member can see the post, what is wrong?**
-
+<h4>Post published on Facebook is visible to the page moderates/owners only, no other member can see the post, what is wrong?</h4>
 Ans: http://codeholic.in/facebook-publish-post-to-page-issue-resolved/
+
 
 == Screenshots ==
 1. Settings page 1. Here you to insert and save the facebook API and secret key. 
