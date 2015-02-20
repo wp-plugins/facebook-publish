@@ -59,7 +59,8 @@ function fp_post_handler($post_id) {
 		$config['pages'] 				= $_POST['global_pages'];
 	}
 	else {
-		$config['pages'] 				= array("own");
+		
+		$config['pages'] 				= $fp_settings["global_pages"];
 	}
 	if($config['fp_publish_this'] == "on" )
 	{
