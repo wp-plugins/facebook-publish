@@ -49,7 +49,8 @@ Ans: http://codeholic.in/facebook-publish-post-to-page-issue-resolved/
 == Changelog ==
 
 = 1.3 =
-
+ 
+ * Fixed quote char(') escape problem
  * Fixed post to pages bug for automatic posting
 
 = 1.2 =
