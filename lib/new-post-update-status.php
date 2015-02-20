@@ -50,6 +50,7 @@ function fp_post_handler($post_id) {
 	$config['fp_timezone_offset'] 	= isset($_POST['fp_timezone_offset'])? $_POST['fp_timezone_offset'] : "";
 	
 	$config['msg_body'] 			= isset($_POST['msg_body'])? $_POST['msg_body'] : $fp_settings['msg_body'] ;
+	$config['msg_body'] 			= stripslashes($config['msg_body']); 
 	
 	$config['fp_featured_img'] 		= isset($_POST['fp_featured_img']) ? $_POST['fp_featured_img'] : $fp_settings["post_featured_image"];
 	
