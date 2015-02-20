@@ -48,6 +48,10 @@ Ans: http://codeholic.in/facebook-publish-post-to-page-issue-resolved/
 
 == Changelog ==
 
+= 1.3.1 =
+
+* Fixed hybridauth debug issue
+
 = 1.3 =
  
  * Fixed quote char(') escape problem

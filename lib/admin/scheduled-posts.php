@@ -41,9 +41,12 @@ function fp_settings_scheduledposts_page() {
 				if(count($fp_settings["queue"]) > 0) {
 					
 					$current_timestamp = time();
+					//pre($fp_settings); //exit;
 					//getting posts in the queue and have their publish timestamp more then current timestamp
 					$args = array(
+								'post_type'	 => 'any',
 								'post__in' 	  => $fp_settings["queue"],
+								'posts_per_page' => -1,
 								'meta_query'  => array(
 													array(
 														'key'       => 'fp_timestamp',
@@ -55,6 +58,7 @@ function fp_settings_scheduledposts_page() {
 							);
 					// The Query
 					$query = new WP_Query( $args );	
+					//pre($query);
 					$post_status = 0;
 					if($query->have_posts()) {
 					
