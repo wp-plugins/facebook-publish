@@ -3,7 +3,7 @@ Contributors: promz, shashanksahu, mukkiee
 Tags: facebook, facebook auto publish, post, facebook publish
 Requires at least: 3.2
 Tested up to: 4.0
-Stable tag: 1.3.1
+Stable tag: 1.3.2
 License: GPLv2
 License URI: http://www.gnu.org/licenses/gpl-2.0.html
 
@@ -47,6 +47,12 @@ Ans: http://codeholic.in/facebook-publish-post-to-page-issue-resolved/
 5. The result
 
 == Changelog ==
+
+= 1.3.2 =
+
+* Fixed save draft posting issue
+* Fixed custom post scheduling issue
+
 
 = 1.3.1 =
 

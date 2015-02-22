@@ -13,9 +13,10 @@ function fp_settings_scheduledposts_page() {
 	global $fp_settings;
 	global $hybrid_config;
 	global $fp_hybridauth;
+	$post_status = 0;
 	$icon_url =  plugins_url( '/assets/fp_logo.png' , __FILE__ );
 
-	?>	
+	?>		
 	<div class="wrap">		
 			
 
@@ -41,10 +42,9 @@ function fp_settings_scheduledposts_page() {
 				if(count($fp_settings["queue"]) > 0) {
 					
 					$current_timestamp = time();
-					//pre($fp_settings); //exit;
 					//getting posts in the queue and have their publish timestamp more then current timestamp
 					$args = array(
-								'post_type'	 => 'any',
+								'post_type'	 => $fp_settings["fp_post_types"],
 								'post__in' 	  => $fp_settings["queue"],
 								'posts_per_page' => -1,
 								'meta_query'  => array(
@@ -58,8 +58,7 @@ function fp_settings_scheduledposts_page() {
 							);
 					// The Query
 					$query = new WP_Query( $args );	
-					//pre($query);
-					$post_status = 0;
+
 					if($query->have_posts()) {
 					
 						while($query->have_posts()) {

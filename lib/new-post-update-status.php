@@ -13,7 +13,17 @@ function fp_publish_post($post_id) {
 	global $fp_hybridauth;
 	global $fp_settings;
 	
-	if ( wp_is_post_revision( $post_id ) ) {
+	if ( wp_is_post_revision( $post_id )   ) {
+		return;
+	}
+
+	//if post is being saved as a draft, dont proceed 
+	if(isset($_POST["save"]) && $_POST["save"] == "Save Draft") {
+		return;
+	}
+	
+	//if new post then dont proceed
+	if(get_post_status( $post_id ) == "auto-draft") {
 		return;
 	}
 
@@ -36,9 +46,11 @@ function fp_publish_post($post_id) {
 }
 
 function fp_post_handler($post_id) {
+	
 	global $fp_settings;
 	
 	$config = array();
+	
 	$config['post_id'] 				= $post_id;
 	
 	$config['fp_publish_this'] 		= isset($_POST['fp_publish_this']) ? $_POST['fp_publish_this'] : "on";
@@ -64,7 +76,7 @@ function fp_post_handler($post_id) {
 		$config['pages'] 				= $fp_settings["global_pages"];
 	}
 	if($config['fp_publish_this'] == "on" )
-	{
+	{	
 		if($config['fp_schedule_this'] == "yes") {
 				
 			fp_schedule_this_post($config);
@@ -174,6 +186,7 @@ function fp_cron_function() {
 		$current_timestamp = time();
 		//getting posts in the queue and have their publish timestamp more then current timestamp
 		$args = array(
+					'post_type'	 => $fp_settings["fp_post_types"],
 					'post__in' 	  => $fp_settings["queue"],
 					'meta_query'  => array(
 										array(
