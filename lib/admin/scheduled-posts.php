@@ -11,8 +11,6 @@ function fp_settings_scheduledposts() {
 function fp_settings_scheduledposts_page() {
 	
 	global $fp_settings;
-	global $hybrid_config;
-	global $fp_hybridauth;
 	$post_status = 0;
 	$icon_url =  plugins_url( '/assets/fp_logo.png' , __FILE__ );
 

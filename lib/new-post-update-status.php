@@ -1,16 +1,11 @@
 <?php
-/*
-add_action('new_to_publish', 'fp_publish_post');
-add_action('draft_to_publish', 'fp_publish_post');
-add_action('pending_to_publish', 'fp_publish_post');
-add_action('auto-draft_to_publish', 'fp_publish_post');
-*/
+use Facebook\FacebookRequest;
 
 add_action( 'save_post', 'fp_publish_post' );
 
 function fp_publish_post($post_id) {
 
-	global $fp_hybridauth;
+	global $fp_cauth;
 	global $fp_settings;
 	
 	if ( wp_is_post_revision( $post_id )   ) {
@@ -27,7 +22,7 @@ function fp_publish_post($post_id) {
 		return;
 	}
 
-	if($fp_hybridauth->isConnectedWith("facebook")) {
+	if($fp_cauth->is_connected_with("Facebook")) {
 
 		if(isset($_POST['fp_publish_this'])) {
 			fp_post_handler($post_id);
@@ -89,15 +84,15 @@ function fp_post_handler($post_id) {
 }
 
 function fp_post_to_fb(  $post_settings ) {
-	global $fp_hybridauth;
+	global $fp_cauth;
 	
 	$fp_settings = get_option("fp_settings");
 
 	if( $fp_session_data = $fp_settings['session_data'] ) {
-		$fp_hybridauth->restoreSessionData( $fp_session_data );
+		$fp_cauth->load_session_data( $fp_session_data );
 	}
 
-	$facebook_adapter 	= $fp_hybridauth->getAdapter("facebook");
+	$facebook_adapter 	= $fp_cauth->get_provider_adapter("Facebook");
 	$msg_body 			= $post_settings['msg_body'];
 	$post_id 			= $post_settings["post_id"];
 	$message 			= render_magic_quote($post_id , $msg_body);
@@ -131,7 +126,7 @@ function fp_post_to_fb(  $post_settings ) {
 
 	if(in_array(  "own" , $post_settings['pages'])){
 		try{
-			$facebook_adapter->setUserStatus( $config );
+			$facebook_adapter->post_status( $config );
 		}
 		catch(Exception $e) {
 			cdlc_show_notification("Post couldn't be published on Facebook. ".$e->getMessage() , "error"); 
@@ -224,9 +219,9 @@ function fp_cron_function() {
 
 function fp_post_to_fb_page($page_id, $post_settings ) {
 
-	global $fp_settings, $fp_hybridauth;
+	global $fp_settings, $fp_cauth;
 
-	$facebook_adapter 	= $fp_hybridauth->getAdapter("facebook");
+	$facebook_adapter 	= $fp_cauth->get_provider_adapter("Facebook");
 	$message 			= $post_settings['msg_body'];
 	$post_id 			= $post_settings["post_id"];
 	$message 			= render_magic_quote($post_id , $message);
@@ -265,7 +260,11 @@ function fp_post_to_fb_page($page_id, $post_settings ) {
 	
 
 	try{
-		$facebook_adapter->api()->api( "/" . $page_id . "/feed", 'POST', $params );
+		//$facebook_adapter->api()->api( "/" . $page_id . "/feed", 'POST', $params );
+		//unset($params["access_token"]);
+		$request = new FacebookRequest( $facebook_adapter->api(), 'POST', "/$page_id/feed", $params );
+		$response = $request->execute();
+		$graphObject = $response->getGraphObject();
 		fp_increment_post_count();
 	}
 	catch(Exception $e) {

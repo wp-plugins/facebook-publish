@@ -3,12 +3,13 @@
 	global $fp_settings;
 	global $fp_version;
 	
+	//delete options only after version 1.4
+	delete_option("fp_settings");
 
 	$fp_settings = get_option("fp_settings");
 	
+	
 
-/*	pre($fp_settings);
-	exit;*/
 	$defaults = array(
 						'version' 				=> $fp_version,
 						'ptf_app_id' 			=> "",
@@ -43,6 +44,3 @@
 	$fp_settings["version"] = $fp_version;
 
 	update_option( "fp_settings", $fp_settings );
-
-	//exit;
-

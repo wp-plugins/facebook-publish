@@ -3,7 +3,7 @@
 Plugin Name: Facebook Publish
 Plugin URI: http://codeholic.in/
 Description: Automatically posts new articles to Facebook. Simple one click Integration. 
-Version: 1.3.2
+Version: 1.4
 Author: Pramod Jodhani
 Author URI: http://codeholic.in/
 */
@@ -22,11 +22,10 @@ $fp_facebook = "";
 
 $fp_session_data = "";
 
-$hybrid_config = dirname(__FILE__) .'/lib/class/hybridauth/config.php';
+require_once( "lib/class/cAuth/index.php" );
 
-require_once( "lib/class/hybridauth/Hybrid/Auth.php" );
-
-$fp_hybridauth = new Hybrid_Auth( $hybrid_config );
+//$fp_hybridauth = new cAuth( );
+$fp_cauth = new cAuth( );
 
 $fp_session_data = $fp_settings['session_data']; 
 
@@ -36,7 +35,7 @@ if($fp_session_data) {
 
 	if( count($fp_session_data) > 0 ) {
 
-		$fp_hybridauth->restoreSessionData( serialize($fp_session_data) );
+		//$fp_cauth->load_session_data( serialize($fp_session_data) );
 	}
 
 }
@@ -44,7 +43,7 @@ if($fp_session_data) {
 
 
 function fp_activate() {
-
+	
     require "fp_activate_plugin.php";
 
 }
