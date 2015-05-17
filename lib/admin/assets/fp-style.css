@@ -99,3 +99,10 @@ label.css-label {
 .dashicons.dashicons-star-filled.yellow {
   color: yellow;
 }
+
+.fpcode {
+  background: none repeat scroll 0 0 #ddd;
+  border: 1px solid #c8c2c2;
+  display: block;
+  padding: 10px;
+}
