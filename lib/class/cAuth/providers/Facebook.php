@@ -42,7 +42,7 @@ class FacebookProvider extends cAuthProviderModel {
 		$login_helper = new FacebookRedirectLoginHelper($redirect_url);
 		//echo $redirect_url; exit;
 		$params		  = array(
-								"scope" => "public_profile,publish_actions,manage_pages"	
+								"scope" => "public_profile,publish_actions,manage_pages,publish_pages"	
 								);
 
 		$fb_login_url  = $login_helper->getLoginUrl($params);

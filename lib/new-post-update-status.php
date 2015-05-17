@@ -260,16 +260,34 @@ function fp_post_to_fb_page($page_id, $post_settings ) {
 	
 
 	try{
+/*
+		$request = new FacebookRequest($facebook_adapter->api(), 'GET', '/me/accounts?fields=name,access_token,perms');
+		$pageList = $request->execute()
+		  ->getGraphObject()
+		  ->asArray();
+*/
+
+		//pre($pageList); exit;
+		/*foreach($pageList["data"] as $page) {
+			if($page->id == $page_id) {
+				$params["access_token"] = $page->access_token;	
+				pre($page);
+			}
+		}*/
 		//$facebook_adapter->api()->api( "/" . $page_id . "/feed", 'POST', $params );
 		//unset($params["access_token"]);
+		//$request = new FacebookRequest( $facebook_adapter->api(), 'POST', "/$page_id/feed", $params );
 		$request = new FacebookRequest( $facebook_adapter->api(), 'POST', "/$page_id/feed", $params );
+		
 		$response = $request->execute();
 		$graphObject = $response->getGraphObject();
 		fp_increment_post_count();
 	}
 	catch(Exception $e) {
+
 		cdlc_show_notification("Post couldn't be published on Facebook. ".$e->getMessage() , "error"); 
 		return;
+
 	}
 }
 

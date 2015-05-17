@@ -3,7 +3,7 @@
 Plugin Name: Facebook Publish
 Plugin URI: http://codeholic.in/
 Description: Automatically posts new articles to Facebook. Simple one click Integration. 
-Version: 1.4.1
+Version: 1.4.2
 Author: Pramod Jodhani
 Author URI: http://codeholic.in/
 */
